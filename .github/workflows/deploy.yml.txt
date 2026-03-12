@@ -6,7 +6,7 @@ on:
       - master
 
 jobs:
-  build-and-deploy:
+  build:
     runs-on: ubuntu-latest
 
     steps:
@@ -24,10 +24,10 @@ jobs:
       - name: Gerar build
         run: npm run build
 
-      - name: Deploy via FTP
+      - name: Enviar para HostGator
         uses: SamKirkland/FTP-Deploy-Action@4.3.4
         with:
-          server: ftp.seudominio.com
+          server: ftp.agilitaregularizacao.com
           username: ${{ secrets.FTP_USER }}
           password: ${{ secrets.FTP_PASS }}
           local-dir: dist/public/
