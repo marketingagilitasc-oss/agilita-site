@@ -1,0 +1,34 @@
+name: Deploy Site
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Baixar projeto
+        uses: actions/checkout@v3
+
+      - name: Instalar Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      - name: Instalar dependências
+        run: npm install --legacy-peer-deps
+
+      - name: Gerar build
+        run: npm run build
+
+      - name: Deploy via FTP
+        uses: SamKirkland/FTP-Deploy-Action@4.3.4
+        with:
+          server: ftp.seudominio.com
+          username: ${{ secrets.FTP_USER }}
+          password: ${{ secrets.FTP_PASS }}
+          local-dir: dist/public/
+          server-dir: public_html/
